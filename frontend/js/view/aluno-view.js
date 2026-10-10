@@ -23,6 +23,9 @@ const AlunoView = {
     AlunoView.elementos.totalAlunos = document.getElementById("total-alunos");
 
     AlunoView.elementos.saidaJson = document.getElementById("saida-json");
+
+    AlunoView.elementos.botaoLimpar =
+      document.getElementById("btn-limpar-dados");
   },
 
   configurarFormulario(aoEnviar) {
@@ -30,10 +33,18 @@ const AlunoView = {
       "submit",
       function (evento) {
         evento.preventDefault();
+
         const dados = AlunoView.lerDados();
+
         aoEnviar(dados);
       },
     );
+  },
+
+  configurarBotaoLimpar(aoLimpar) {
+    AlunoView.elementos.botaoLimpar.addEventListener("click", function () {
+      aoLimpar();
+    });
   },
 
   lerDados() {
@@ -46,15 +57,17 @@ const AlunoView = {
     };
   },
 
+  confirmarLimpeza() {
+    return confirm("Deseja remover todos os alunos cadastrados?");
+  },
+
   exibirSucesso(mensagem) {
     AlunoView.elementos.mensagem.textContent = mensagem;
-
     AlunoView.elementos.mensagem.className = "mensagem sucesso";
   },
 
   exibirErro(mensagem) {
     AlunoView.elementos.mensagem.textContent = mensagem;
-
     AlunoView.elementos.mensagem.className = "mensagem erro";
   },
 
@@ -82,6 +95,7 @@ const AlunoView = {
 
       return;
     }
+
     alunos.forEach(function (aluno) {
       const linha = document.createElement("tr");
 
@@ -99,15 +113,14 @@ const AlunoView = {
         const celula = document.createElement("td");
 
         celula.textContent = valor;
-
         linha.appendChild(celula);
-
-        corpoTabela.appendChild(linha);
       });
+
+      corpoTabela.appendChild(linha);
     });
   },
 
-  exibirJson(textJson) {
-    AlunoView.elementos.saidaJson.textContent = textJson;
-  }
+  exibirJson(textoJson) {
+    AlunoView.elementos.saidaJson.textContent = textoJson;
+  },
 };

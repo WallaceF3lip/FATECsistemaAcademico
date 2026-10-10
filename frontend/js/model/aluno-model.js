@@ -1,76 +1,83 @@
 const AlunoModel = {
-    alunos: [],
+    normalizarTexto(valor) {
+        if (valor === null || valor === undefined) {
+            return "";
+        }
 
-    normalizarTexto(valor){
-        if(valor === null || valor === undefined)
-            return '';
         return String(valor).trim();
     },
-
-    validarEmail(email){
-        return email.includes('@') && email.includes('.');
+    
+    validarEmail(email) {
+        return email.includes("@") && email.includes(".");
     },
-
-    localzarPorRA(ra){
-        return AlunoModel.alunos.find(aluno => 
-            aluno.ra === ra);
+    
+    localizarPorRa(alunos, ra) {
+        return alunos.find(
+            aluno => aluno.ra === ra
+        );
     },
+    
+    gerarProximoId(alunos) {
+        if (alunos.length === 0) {
+            return 1;
+        }
+        
+        const ids = alunos.map(
+            aluno => aluno.id
+        );
+        
+        const maiorId = Math.max(...ids);
 
-    cadastrar(dados){
-        const ra = AlunoModel.normalizarTexto (dados.ra);
+        return maiorId + 1;
+    },
+    
+    criar(dados, alunos) {
+        const ra = AlunoModel.normalizarTexto(dados.ra);
         const nome = AlunoModel.normalizarTexto(dados.nome);
         const email = AlunoModel.normalizarTexto(dados.email);
         const curso = AlunoModel.normalizarTexto(dados.curso);
         const turma = AlunoModel.normalizarTexto(dados.turma);
-
-        if(
-            ra.length === '' ||
-            nome.length === '' ||
-            email.length === '' ||
-            curso.length === '' ||
-            turma.length === ''
-        ){
+        
+        if (
+            ra === "" ||
+            nome === "" ||
+            email === "" ||
+            curso === "" ||
+            turma === ""
+        ) {
             return {
                 sucesso: false,
-                message: 'Todos os campos são obrigatórios',
+                mensagem: "Todos os campos são obrigatórios."
             };
         }
-
-        if(!AlunoModel.validarEmail(email)){
+        
+        if (!AlunoModel.validarEmail(email)) {
             return {
                 sucesso: false,
-                message: 'E-mail inválido',
+                mensagem: "Informe um e-mail válido."
             };
         }
-
-        if(AlunoModel.localzarPorRA(ra)){
+        
+        if (AlunoModel.localizarPorRa(alunos, ra)) {
             return {
                 sucesso: false,
-                message: 'Já existe um aluno com esse RA',
+                mensagem: "Já existe um aluno com esse RA."
             };
         }
-
+        
         const aluno = {
-            id: AlunoModel.alunos.length + 1,
-
+            id: AlunoModel.gerarProximoId(alunos),
             ra: ra,
             nome: nome,
             email: email,
             curso: curso,
             turma: turma,
-
-            ativo: true,
+            ativo: true
         };
-
-        AlunoModel.alunos.push(aluno);
-
+        
         return {
             sucesso: true,
-            message: aluno
+            aluno: aluno
         };
-    },
-
-    listar(){
-        return [...AlunoModel.alunos];
     }
-}
+};

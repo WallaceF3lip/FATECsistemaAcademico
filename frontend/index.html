@@ -12,7 +12,7 @@
         <div class="container">
             <h1>Sistema Acadêmico DS II</h1>
             <p>
-                Versão 0.2 - Cadastro de Alunos com DOM e eventos.
+                Versão 0.3 - Persistência local.
             </p>
         </div>
     </header>
@@ -51,9 +51,15 @@
                         <input type="text" id="turma" name="turma" placeholder="Exemplo: 2 DSM" required>
                     </div>
 
-                    <button type="submit">
-                        Cadastrar Aluno
-                    </button>
+                    <div class="acoes-formulario">
+                        <button type="submit">
+                            Cadastrar aluno
+                        </button>
+
+                        <button type="button" id="btn-limpar-dados" class="botao-secundario">
+                            Limpar dados
+                        </button>
+                    </div>
                 </div>
             </form>
 
@@ -101,11 +107,12 @@ Total: 0
     </main>
     
     <footer>
-        <p>2026 - Desenvolvimento de Servidores II. Versão 0.2</p>
+        <p>2026 - Desenvolvimento de Servidores II. Versão 0.3</p>
     </footer>
 
     <script src="js/view/aluno-view.js" defer></script>
     <script src="js/model/aluno-model.js" defer></script>
+    <script src="js/service/aluno-service.js" defer></script>
     <script src="js/controller/aluno-controller.js" defer></script>
 </body>
 </html>
