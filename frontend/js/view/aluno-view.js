@@ -1,49 +1,113 @@
 const AlunoView = {
-    
-    lerDados() {
-        return {
-        ra: prompt("Digite o RA do aluno:"),
-        nome: prompt("Digite o nome do aluno:"),
-        email: prompt("Digite o e-mail do aluno:"),
-        curso: prompt("Digite o curso:"),
-        turma: prompt("Digite a turma:")
+  elementos: {},
 
-        };
-    },
+  inicializar() {
+    AlunoView.elementos.formulario = document.getElementById("form-aluno");
 
-    exibirAluno(aluno){
-        console.log("Aluno Cadastrado com sucesso.");
-        
-        console.table(aluno);        
-    },
+    AlunoView.elementos.ra = document.getElementById("ra");
 
-    exibirErro(mensagem){
-        console.error("Erro: ",mensagem);
-    },
+    AlunoView.elementos.nome = document.getElementById("nome");
 
-    perguntarNovoCadastro(){
-        return confirm("Deseja cadastrar um novo aluno?");
-    },
+    AlunoView.elementos.email = document.getElementById("email");
 
-    exibirLista(alunos){
-        console.log("Quantidade de alunos cadastrados: ",alunos.length);
+    AlunoView.elementos.curso = document.getElementById("curso");
 
-        if(alunos.length === 0){
-            console.log("Nenhum aluno foi cadastrado.");
-            return;
-        };
+    AlunoView.elementos.turma = document.getElementById("turma");
 
-        console.table(alunos);
-    },
+    AlunoView.elementos.mensagem = document.getElementById("mensagem");
 
-    exibirJson(textJson){
-        console.log("Alunos em formato JSON: ");
-        console.log(textJson);        
-    },
+    AlunoView.elementos.corpoTabela = document.getElementById(
+      "corpo-tabela-alunos",
+    );
 
-    exibirDadosRecuperados(dados){
-        console.log("Dados recuperados com JSOn.parse(): ");
+    AlunoView.elementos.totalAlunos = document.getElementById("total-alunos");
 
-        console.table(dados);
-    },
-}
+    AlunoView.elementos.saidaJson = document.getElementById("saida-json");
+  },
+
+  configurarFormulario(aoEnviar) {
+    AlunoView.elementos.formulario.addEventListener(
+      "submit",
+      function (evento) {
+        evento.preventDefault();
+        const dados = AlunoView.lerDados();
+        aoEnviar(dados);
+      },
+    );
+  },
+
+  lerDados() {
+    return {
+      ra: AlunoView.elementos.ra.value,
+      nome: AlunoView.elementos.nome.value,
+      email: AlunoView.elementos.email.value,
+      curso: AlunoView.elementos.curso.value,
+      turma: AlunoView.elementos.turma.value,
+    };
+  },
+
+  exibirSucesso(mensagem) {
+    AlunoView.elementos.mensagem.textContent = mensagem;
+
+    AlunoView.elementos.mensagem.className = "mensagem sucesso";
+  },
+
+  exibirErro(mensagem) {
+    AlunoView.elementos.mensagem.textContent = mensagem;
+
+    AlunoView.elementos.mensagem.className = "mensagem erro";
+  },
+
+  limparFormulario() {
+    AlunoView.elementos.formulario.reset();
+    AlunoView.elementos.ra.focus();
+  },
+
+  exibirLista(alunos) {
+    const corpoTabela = AlunoView.elementos.corpoTabela;
+
+    corpoTabela.textContent = "";
+
+    AlunoView.elementos.totalAlunos.textContent = `Total: ${alunos.length}`;
+
+    if (alunos.length === 0) {
+      const linha = document.createElement("tr");
+      const celula = document.createElement("td");
+
+      celula.colSpan = 7;
+      celula.textContent = "Nenhum aluno foi cadastrado.";
+
+      linha.appendChild(celula);
+      corpoTabela.appendChild(linha);
+
+      return;
+    }
+    alunos.forEach(function (aluno) {
+      const linha = document.createElement("tr");
+
+      const valores = [
+        aluno.id,
+        aluno.ra,
+        aluno.nome,
+        aluno.email,
+        aluno.curso,
+        aluno.turma,
+        aluno.ativo ? "Ativo" : "Inativo",
+      ];
+
+      valores.forEach(function (valor) {
+        const celula = document.createElement("td");
+
+        celula.textContent = valor;
+
+        linha.appendChild(celula);
+
+        corpoTabela.appendChild(linha);
+      });
+    });
+  },
+
+  exibirJson(textJson) {
+    AlunoView.elementos.saidaJson.textContent = textJson;
+  }
+};

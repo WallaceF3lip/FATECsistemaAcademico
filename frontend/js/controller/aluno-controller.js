@@ -1,34 +1,34 @@
 const AlunoController = {
-    iniciar(){
-        let continuar = true;
+  iniciar() {
+    AlunoView.inicializar();
+    AlunoView.configurarFormulario(function (dados) {
+      AlunoController.cadastrar(dados);
+    });
+    AlunoController.atualizarVisualizacao();
+  },
 
-        while(continuar){
+  cadastrar(dados) {
+    const resultado = AlunoModel.cadastrar(dados);
 
-            const dados = AlunoView.lerDados();
-            
-            const resultado = AlunoModel.cadastrar(dados);
-
-            if(resultado.sucesso) {
-                AlunoView.exibirAluno(resultado.aluno);
-            } else{
-                AlunoView.exibirErro(resultado.message);
-            }
-
-            continuar = AlunoView.perguntarNovoCadastro();
-        };
-        
-        const alunos = AlunoModel.listar();
-
-        AlunoView.exibirLista(alunos);
-
-        const TextJSON = JSON.stringify(alunos, null, 2);
-
-        AlunoView.exibirJson(TextJSON);
-
-        const dadosRecuperados = JSON.parse(TextJSON);
-
-        AlunoView.exibirDadosRecuperados(dadosRecuperados);
+    if (!resultado.sucesso) {
+      AlunoView.exibirErro(resultado.mensagem);
+      return;
     }
+
+    AlunoView.exibirSucesso(
+      `Aluno ${resultado?.aluno?.nome} cadastrado com sucesso.`,
+    );
+
+    AlunoView.limparFormulario();
+    AlunoController.atualizarVisualizacao();
+  },
+
+  atualizarVisualizacao() {
+    const alunos = AlunoModel.listar();
+    AlunoView.exibirLista(alunos);
+    const textoJson = JSON.stringify(alunos, null, 2);
+    AlunoView.exibirJson(textoJson);
+  },
 };
 
 AlunoController.iniciar();
