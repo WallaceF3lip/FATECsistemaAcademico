@@ -12,7 +12,7 @@
         <div class="container">
             <h1>Sistema Acadêmico DS II</h1>
             <p>
-                Versão 0.3 - Persistência local.
+                Versão 0.3 - Persistência local e camada Service.
             </p>
         </div>
     </header>
@@ -52,12 +52,8 @@
                     </div>
 
                     <div class="acoes-formulario">
-                        <button type="submit">
+                        <button id="botao-salvar" type="submit">
                             Cadastrar aluno
-                        </button>
-
-                        <button type="button" id="btn-limpar-dados" class="botao-secundario">
-                            Limpar dados
                         </button>
                     </div>
                 </div>
@@ -107,12 +103,12 @@ Total: 0
     </main>
     
     <footer>
-        <p>2026 - Desenvolvimento de Servidores II. Versão 0.3</p>
+        <!-- <p>2026 - Desenvolvimento de Servidores II. Versão 0.3</p> -->
     </footer>
 
-    <script src="js/view/aluno-view.js" defer></script>
-    <script src="js/model/aluno-model.js" defer></script>
-    <script src="js/service/aluno-service.js" defer></script>
-    <script src="js/controller/aluno-controller.js" defer></script>
+    <script src="./js/model/aluno-model.js" defer></script>
+    <script src="./js/service/aluno-service.js" defer></script>
+    <script src="./js/view/aluno-view.js" defer></script>
+    <script src="./js/controller/aluno-controller.js" defer></script>
 </body>
 </html>

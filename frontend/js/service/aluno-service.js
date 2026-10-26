@@ -1,65 +1,66 @@
 const AlunoService = {
-    
-    CHAVE_STORAGE: "sistema-academico-ds2:alunos",
-    
-    listar() {
-        const textoJson = localStorage.getItem(
-            AlunoService.CHAVE_STORAGE
-        );
+    URL_API: "http://localhost:3000/api/alunos",
 
-        if (textoJson === null) {
-            return [];
-        }
-        
+    async processarResposta(resposta) {
+        let resultado;
+
         try {
-            const dados = JSON.parse(textoJson);
-            if (!Array.isArray(dados)) {
-                return [];
-            }
-
-            return dados;
-
+            resultado = await resposta.json();
         } catch (erro) {
-            localStorage.removeItem(
-                AlunoService.CHAVE_STORAGE
+            throw new Error(
+                "O servidor retornou uma resposta inválida."
             );
-
-            return [];
         }
-    },
-    
-    salvar(alunos) {
-        const textoJson = JSON.stringify(alunos);
 
-        localStorage.setItem(
-            AlunoService.CHAVE_STORAGE,
-            textoJson
-        );
-    },
-    
-    cadastrar(dados) {
-        
-        const alunos = AlunoService.listar();
-        
-        const resultado = AlunoModel.criar(
-            dados,
-            alunos
-        );
-        
-        if (!resultado.sucesso) {
-            return resultado;
+        if (!resposta.ok) {
+            throw new Error(
+                resultado.mensagem ||
+                "Não foi possível concluir a operação."
+            );
         }
-        
-        alunos.push(resultado.aluno);
-        
-        AlunoService.salvar(alunos);
-        
+
         return resultado;
     },
-    
-    limpar() {
-        localStorage.removeItem(
-            AlunoService.CHAVE_STORAGE
-        );
+
+    async requisitar(opcoes = {}) {
+        let resposta;
+
+        try {
+            resposta = await fetch(
+                AlunoService.URL_API,
+                opcoes
+            );
+        } catch (erro) {
+            throw new Error(
+                "Não foi possível conectar ao servidor."
+            );
+        }
+
+        return AlunoService.processarResposta(resposta);
+    },
+
+    async listar() {
+        const resultado = await AlunoService.requisitar({
+            method: "GET",
+
+            headers: {
+                "Accept": "application/json"
+            }
+        });
+
+        return resultado.dados;
+    },
+
+    async cadastrar(aluno) {
+        return AlunoService.requisitar({
+            method: "POST",
+
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(aluno)
+        });
     }
 };

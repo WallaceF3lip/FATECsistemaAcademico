@@ -1,126 +1,145 @@
 const AlunoView = {
-  elementos: {},
+    elementos: {},
 
-  inicializar() {
-    AlunoView.elementos.formulario = document.getElementById("form-aluno");
+    iniciar() {
+        AlunoView.elementos.formulario =
+            document.querySelector("#form-aluno");
 
-    AlunoView.elementos.ra = document.getElementById("ra");
+        AlunoView.elementos.ra =
+            document.querySelector("#ra");
 
-    AlunoView.elementos.nome = document.getElementById("nome");
+        AlunoView.elementos.nome =
+            document.querySelector("#nome");
 
-    AlunoView.elementos.email = document.getElementById("email");
+        AlunoView.elementos.email =
+            document.querySelector("#email");
 
-    AlunoView.elementos.curso = document.getElementById("curso");
+        AlunoView.elementos.curso =
+            document.querySelector("#curso");
 
-    AlunoView.elementos.turma = document.getElementById("turma");
+        AlunoView.elementos.turma =
+            document.querySelector("#turma");
 
-    AlunoView.elementos.mensagem = document.getElementById("mensagem");
+        AlunoView.elementos.mensagem =
+            document.querySelector("#mensagem");
 
-    AlunoView.elementos.corpoTabela = document.getElementById(
-      "corpo-tabela-alunos",
-    );
+        AlunoView.elementos.corpoTabela =
+            document.querySelector("#corpo-tabela-alunos");
 
-    AlunoView.elementos.totalAlunos = document.getElementById("total-alunos");
+        AlunoView.elementos.saidaJson =
+            document.querySelector("#saida-json");
 
-    AlunoView.elementos.saidaJson = document.getElementById("saida-json");
+        AlunoView.elementos.botaoSalvar =
+            document.querySelector("#botao-salvar");
+    },
 
-    AlunoView.elementos.botaoLimpar =
-      document.getElementById("btn-limpar-dados");
-  },
+    configurarFormulario(aoEnviar) {
+        AlunoView.elementos.formulario.addEventListener(
+            "submit",
+            aoEnviar
+        );
+    },
 
-  configurarFormulario(aoEnviar) {
-    AlunoView.elementos.formulario.addEventListener(
-      "submit",
-      function (evento) {
-        evento.preventDefault();
+    lerDados() {
+        return {
+            ra: AlunoView.elementos.ra.value,
+            nome: AlunoView.elementos.nome.value,
+            email: AlunoView.elementos.email.value,
+            curso: AlunoView.elementos.curso.value,
+            turma: AlunoView.elementos.turma.value
+        };
+    },
 
-        const dados = AlunoView.lerDados();
+    exibirMensagem(mensagem, tipo) {
+        AlunoView.elementos.mensagem.textContent = mensagem;
 
-        aoEnviar(dados);
-      },
-    );
-  },
+        AlunoView.elementos.mensagem.className =
+            `mensagem ${tipo}`;
+    },
 
-  configurarBotaoLimpar(aoLimpar) {
-    AlunoView.elementos.botaoLimpar.addEventListener("click", function () {
-      aoLimpar();
-    });
-  },
-
-  lerDados() {
-    return {
-      ra: AlunoView.elementos.ra.value,
-      nome: AlunoView.elementos.nome.value,
-      email: AlunoView.elementos.email.value,
-      curso: AlunoView.elementos.curso.value,
-      turma: AlunoView.elementos.turma.value,
-    };
-  },
-
-  confirmarLimpeza() {
-    return confirm("Deseja remover todos os alunos cadastrados?");
-  },
-
-  exibirSucesso(mensagem) {
-    AlunoView.elementos.mensagem.textContent = mensagem;
-    AlunoView.elementos.mensagem.className = "mensagem sucesso";
-  },
-
-  exibirErro(mensagem) {
-    AlunoView.elementos.mensagem.textContent = mensagem;
-    AlunoView.elementos.mensagem.className = "mensagem erro";
-  },
-
-  limparFormulario() {
-    AlunoView.elementos.formulario.reset();
-    AlunoView.elementos.ra.focus();
-  },
-
-  exibirLista(alunos) {
-    const corpoTabela = AlunoView.elementos.corpoTabela;
-
-    corpoTabela.textContent = "";
-
-    AlunoView.elementos.totalAlunos.textContent = `Total: ${alunos.length}`;
-
-    if (alunos.length === 0) {
-      const linha = document.createElement("tr");
-      const celula = document.createElement("td");
-
-      celula.colSpan = 7;
-      celula.textContent = "Nenhum aluno foi cadastrado.";
-
-      linha.appendChild(celula);
-      corpoTabela.appendChild(linha);
-
-      return;
-    }
-
-    alunos.forEach(function (aluno) {
-      const linha = document.createElement("tr");
-
-      const valores = [
-        aluno.id,
-        aluno.ra,
-        aluno.nome,
-        aluno.email,
-        aluno.curso,
-        aluno.turma,
-        aluno.ativo ? "Ativo" : "Inativo",
-      ];
-
-      valores.forEach(function (valor) {
+    criarCelula(valor) {
         const celula = document.createElement("td");
 
         celula.textContent = valor;
-        linha.appendChild(celula);
-      });
 
-      corpoTabela.appendChild(linha);
-    });
-  },
+        return celula;
+    },
 
-  exibirJson(textoJson) {
-    AlunoView.elementos.saidaJson.textContent = textoJson;
-  },
+    exibirLista(alunos) {
+        AlunoView.elementos.corpoTabela.innerHTML = "";
+
+        if (alunos.length === 0) {
+            const linha = document.createElement("tr");
+            const celula = document.createElement("td");
+
+            celula.colSpan = 7;
+            celula.textContent =
+                "Nenhum aluno foi cadastrado.";
+
+            linha.appendChild(celula);
+
+            AlunoView.elementos.corpoTabela.appendChild(
+                linha
+            );
+
+            return;
+        }
+
+        alunos.forEach(aluno => {
+            const linha = document.createElement("tr");
+
+            linha.appendChild(
+                AlunoView.criarCelula(aluno.id)
+            );
+
+            linha.appendChild(
+                AlunoView.criarCelula(aluno.ra)
+            );
+
+            linha.appendChild(
+                AlunoView.criarCelula(aluno.nome)
+            );
+
+            linha.appendChild(
+                AlunoView.criarCelula(aluno.email)
+            );
+
+            linha.appendChild(
+                AlunoView.criarCelula(aluno.curso)
+            );
+
+            linha.appendChild(
+                AlunoView.criarCelula(aluno.turma)
+            );
+
+            linha.appendChild(
+                AlunoView.criarCelula(
+                    aluno.ativo ? "Sim" : "Não"
+                )
+            );
+
+            AlunoView.elementos.corpoTabela.appendChild(
+                linha
+            );
+        });
+    },
+
+    exibirJson(alunos) {
+        AlunoView.elementos.saidaJson.textContent =
+            JSON.stringify(alunos, null, 2);
+    },
+
+    limparFormulario() {
+        AlunoView.elementos.formulario.reset();
+
+        AlunoView.elementos.ra.focus();
+    },
+
+    alterarEstadoFormulario(processando) {
+        AlunoView.elementos.botaoSalvar.disabled =
+            processando;
+
+        AlunoView.elementos.botaoSalvar.textContent =
+            processando ? "Salvando..." : "Cadastrar aluno";
+    }
 };
