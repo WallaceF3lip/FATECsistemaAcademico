@@ -1,47 +1,32 @@
 import AlunoModel from "../model/aluno-model.js";
 
-import {
-    enviarJson,
-    lerCorpoJson
-} from "../utils/http.js";
-
 const AlunoController = {
-    listar(req, res) {
-        const alunos = AlunoModel.listar();
+  listar(req, res) {
+    const alunos = AlunoModel.listar();
 
-        enviarJson(res, 200, {
-            total: alunos.length,
-            dados: alunos
-        });
-    },
+    return res.status(200).json({
+      total: alunos.length,
+      dados: alunos,
+    });
+  },
 
-    async cadastrar(req, res) {
-        try {
-            const dados = await lerCorpoJson(req);
+  cadastrar(req, res) {
+    const dados = req.body;
+    const resultado = AlunoModel.cadastrar(dados);
 
-            const resultado = AlunoModel.cadastrar(dados);
-
-            if (!resultado.sucesso) {
-                enviarJson(res, resultado.status, {
-                    sucesso: false,
-                    mensagem: resultado.mensagem
-                });
-
-                return;
-            }
-
-            enviarJson(res, resultado.status, {
-                sucesso: true,
-                mensagem: "Aluno cadastrado com sucesso.",
-                dados: resultado.aluno
-            });
-        } catch (erro) {
-            enviarJson(res, 400, {
-                sucesso: false,
-                mensagem: "O corpo da requisição contém um JSON inválido."
-            });
-        }
+    if (!resultado.sucesso) {
+      return res.status(resultado.status).json({
+        sucesso: false,
+        mensagem: resultado.mensagem,
+      });
     }
+
+    return res.status(201).json({
+      sucesso: true,
+      mensagem: "Aluno cadastrado com sucesso.",
+      dados: resultado.aluno,
+    });
+  },
 };
 
 export default AlunoController;
