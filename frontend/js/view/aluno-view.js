@@ -26,6 +26,9 @@ const AlunoView = {
         AlunoView.elementos.corpoTabela =
             document.querySelector("#corpo-tabela-alunos");
 
+        AlunoView.elementos.totalAlunos =
+            document.querySelector("#total-alunos");
+
         AlunoView.elementos.saidaJson =
             document.querySelector("#saida-json");
 
@@ -67,6 +70,9 @@ const AlunoView = {
 
     exibirLista(alunos) {
         AlunoView.elementos.corpoTabela.innerHTML = "";
+
+        AlunoView.elementos.totalAlunos.textContent =
+            `Total: ${alunos.length}`;
 
         if (alunos.length === 0) {
             const linha = document.createElement("tr");
