@@ -1,0 +1,178 @@
+type: spec.insomnia.rest/5.0
+schema_version: "5.1"
+name: FATEC
+meta:
+  id: wrk_056448376d2d4384b4300270e9b2eb14
+  created: 1772567471234
+  modified: 1793042302583
+  description: ""
+collection:
+  - name: Sistema Acadêmico DS II
+    meta:
+      id: fld_249ec14f4395434ba4802209cfe93a6e
+      created: 1793042400992
+      modified: 1793042400992
+      sortKey: -1793042400966
+      description: ""
+    children:
+      - name: 01 - Sistema
+        meta:
+          id: fld_7bb850628ded47d79350bf89fc4e1904
+          created: 1793042400994
+          modified: 1793042400994
+          sortKey: -1793042400965
+          description: ""
+        children:
+          - url: "{{base_url}}/api/health"
+            name: Verificar servidor
+            meta:
+              id: req_a7c412aeddf04db499f920ba0141cf8d
+              created: 1793042400996
+              modified: 1793042400996
+              isPrivate: false
+              description: ""
+              sortKey: -1793042400964
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: 02 - Alunos
+        meta:
+          id: fld_262cf3741c4e44bcb391b79d3abf1b95
+          created: 1793042400998
+          modified: 1793042400998
+          sortKey: -1793042400963
+          description: ""
+        children:
+          - url: "{{base_url}}/api/alunos"
+            name: Listando alunos
+            meta:
+              id: req_25879f04979a4b3baceada79a99cebe3
+              created: 1793042401000
+              modified: 1793042401000
+              isPrivate: false
+              description: ""
+              sortKey: -1793042400962
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{base_url}}/api/alunos"
+            name: Cadastrar aluno
+            meta:
+              id: req_2931fe0483d948a3bb0e88670e7c452d
+              created: 1793042401002
+              modified: 1793488972603
+              isPrivate: false
+              description: ""
+              sortKey: -1793042400961
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "ra": "12072005",
+                  "nome": "Emanuel Pereira",
+                  "email": "Emanuel.Pereira01@aluno.cps.sp.gov.br",
+                  "curso": "SI",
+                  "turma": "1º semestre"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_b7e14bf86d282d92fff907444183d17aaf4b19ec
+    created: 1772567471245
+    modified: 1772567471245
+environments:
+  name: Base Environment
+  meta:
+    id: env_b7e14bf86d282d92fff907444183d17aaf4b19ec
+    created: 1772567471240
+    modified: 1793042400978
+    isPrivate: false
+  data:
+    base_url: http://localhost:3000
+spec:
+  contents:
+    info:
+      name: Sistema Acadêmico DS II
+      schema: https://schema.getpostman.com/json/collection/v2.1.0/collection.json
+    variable:
+      - key: base_url
+        value: http://localhost:3000
+    item:
+      - name: 01 - Sistema
+        item:
+          - name: Verificar servidor
+            request:
+              method: GET
+              url:
+                raw: "{{base_url}}/api/health"
+                host:
+                  - "{{base_url}}"
+                path:
+                  - api
+                  - health
+      - name: 02 - Alunos
+        item:
+          - name: Listando alunos
+            request:
+              method: GET
+              url:
+                raw: "{{base_url}}/api/alunos"
+                host:
+                  - "{{base_url}}"
+                path:
+                  - api
+                  - alunos
+          - name: Cadastrar aluno
+            request:
+              method: POST
+              header:
+                - key: Content-Type
+                  value: application/json
+              body:
+                mode: raw
+                raw: |-
+                  {
+                    "ra": "2026001",
+                    "nome": "Marcos Costa",
+                    "email": "marcos.costa@email.com",
+                    "curso": "SI",
+                    "turma": "2º semestre"
+                  }
+                options:
+                  raw:
+                    language: json
+              url:
+                raw: "{{base_url}}/api/alunos"
+                host:
+                  - "{{base_url}}"
+                path:
+                  - api
+                  - alunos
+  meta:
+    id: spc_cc9344e298f647d5b0d033f76b202c23
+    created: 1793042399351
+    modified: 1793484971850

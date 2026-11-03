@@ -186,9 +186,8 @@ pre {
 }
 
 .acoes-formulario {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  display: inherit;
+  padding-top: 22px;
 }
 
 .botao-secundario {
