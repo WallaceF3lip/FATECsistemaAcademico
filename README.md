@@ -28,6 +28,13 @@ Se ela ainda não estiver instalada:
 6. selecione Open with Live Server.
 
 ## Relação dos endpoints disponíveis
+
+| Método  | Endpoint    | Operação             |
+|---------|-------------|----------------------|
+| GET     | /api/health | Verificar o servidor |
+| GET     | /api/alunos | Listar os alunos     |
+| POST    | /api/alunos | Cadastrar um aluno   |
+
 Na pasta Insomnia [`FATECsistemaAcademico\docs\Insomnia`] temos uma arquivo para importar todos os endpoints ja configurados.
 
 ## Indicação da pasta em que estão as evidências
