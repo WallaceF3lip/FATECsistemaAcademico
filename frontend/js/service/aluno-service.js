@@ -22,12 +22,12 @@ const AlunoService = {
         return resultado;
     },
 
-    async requisitar(opcoes = {}) {
+    async requisitar(caminho = "", opcoes = {}) {
         let resposta;
 
         try {
             resposta = await fetch(
-                AlunoService.URL_API,
+                `${AlunoService.URL_API}${caminho}`,
                 opcoes
             );
         } catch (erro) {
@@ -40,7 +40,7 @@ const AlunoService = {
     },
 
     async listar() {
-        const resultado = await AlunoService.requisitar({
+        const resultado = await AlunoService.requisitar("", {
             method: "GET",
 
             headers: {
@@ -51,8 +51,25 @@ const AlunoService = {
         return resultado.dados;
     },
 
+    async buscarPorId(id) {
+        const idSeguro = encodeURIComponent(id);
+
+        const resultado = await AlunoService.requisitar(
+            `/${idSeguro}`,
+            {
+                method: "GET",
+
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
+
+        return resultado.dados;
+    },
+
     async cadastrar(aluno) {
-        return AlunoService.requisitar({
+        return AlunoService.requisitar("", {
             method: "POST",
 
             headers: {
@@ -62,5 +79,38 @@ const AlunoService = {
 
             body: JSON.stringify(aluno)
         });
+    },
+
+    async atualizar(id, aluno) {
+        const idSeguro = encodeURIComponent(id);
+
+        return AlunoService.requisitar(
+            `/${idSeguro}`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(aluno)
+            }
+        );
+    },
+
+    async remover(id) {
+        const idSeguro = encodeURIComponent(id);
+
+        return AlunoService.requisitar(
+            `/${idSeguro}`,
+            {
+                method: "DELETE",
+
+                headers: {
+                    "Accept": "application/json"
+                }
+            }
+        );
     }
 };

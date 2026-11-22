@@ -37,7 +37,7 @@ footer p {
 }
 
 .container {
-  width: min(92%, 1100px);
+  width: min(98%, 1100px);
   margin: 0 auto;
 }
 
@@ -186,12 +186,15 @@ pre {
 }
 
 .acoes-formulario {
-  display: inherit;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
   padding-top: 22px;
 }
 
 .botao-secundario {
   background-color: #64748b;
+  color: #ffffff;
 }
 
 .botao-secundario:hover {
@@ -213,4 +216,32 @@ button:disabled {
 
 .mensagem.erro {
   color: #b91c1c;
+}
+
+.acoes-tabela {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.acoes-tabela button {
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.botao-editar,
+.botao-editar:hover {
+  background-color: #2563eb;
+}
+
+.botao-excluir,
+.botao-excluir:hover {
+  background-color: #dc2626;
+}
+
+.acoes-tabela button:hover {
+  opacity: 0.85;
 }
